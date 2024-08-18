@@ -11,10 +11,8 @@ for i in range(N):
 
 
 cnt = 0
-
-lower, upper = float('inf'), 0
-
 all = set()
+house = set()
 
 for i in range(N):
     for j in range(N):
@@ -22,17 +20,19 @@ for i in range(N):
         if ls[i][j] == 'P':
             sr, sc = i, j
             h = high[i][j]
-            upper = max(upper, h)
-            lower = min(lower, h)
+            house.add(h)
         elif ls[i][j] == 'K':
             cnt += 1
             h = high[i][j]
-            upper = max(upper, h)
-            lower = min(lower, h)
+            house.add(h)
 
-d = [(1, 0), (-1, 0), (0, 1), (0, -1), (1, 1), (-1, 1), (1, -1), (-1, -1)]
 
 all = list(all)
+all.sort()  # 없으면 틀림
+
+minH, maxH = min(house), max(house)
+
+d = [(1, 0), (-1, 0), (0, 1), (0, -1), (1, 1), (-1, 1), (1, -1), (-1, -1)]
 
 
 def bfs(upper, lower):
@@ -56,12 +56,10 @@ def bfs(upper, lower):
         return False
 
 
-# print(upper, lower)
-upperidx = all.index(upper)
-# print(upperidx)
+upperidx = all.index(maxH)
 ans = 10e6
 for i in all:
-    if i > lower:
+    if i > minH:
         break
     bot = upperidx
     top = len(all)-1
@@ -74,5 +72,20 @@ for i in all:
             top = mid-1
         else:
             bot = mid+1
-# print(all)
 print(ans)
+
+
+'''
+4
+.K.K
+K..K
+P..K
+K...
+889065 410637 837320 399872
+531498 929923 153678 295021
+340357 352205 77487 574205
+346047 227896 804677 961686
+
+420527
+
+'''
