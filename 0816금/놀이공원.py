@@ -1,5 +1,25 @@
 # https://www.acmicpc.net/problem/1561
-import heapq
+'''
+3 5
+7 8 9 7 8
+3
+
+7 2
+3 2
+2
+
+--->6
+2, 3, 2
+
+
+22 5
+1 2 3 4 5
+4
+
+-->8
+5 + 8 + 4+ 2+2+1
+
+'''
 N, M = map(int, input().split())
 
 ls = list(map(int, input().split()))
@@ -10,40 +30,38 @@ for i in range(M):
     g[dur].append(i+1)
 
 
-def sol(time):
-    cnt = 0
-    # time-1 까지
+def sol(t):
+    cnt = M
     for i in range(1, 31):
-        cycle = (time-1)//i
-        cnt += cycle * len(g[i])
-    # time 일때
-    cand = []
-    for i in range(1, 31):
-        if time//i == 0:
-            cand.extend(g[i])
-    if cnt < N <= cnt+len(cand):
-        cand.sort()
-    elif cnt >= N:
-        return False
-    elif cnt+len(cand) < N:
-        return False
-
-    return -1
+        cnt += t//i*len(g[i])
+    return cnt
 
 
 bot, top = 0, 2*10e9*30
-while bot < top:
+ans = float('inf')
+while bot <= top:
     mid = (bot+top)//2
-    sol(mid)
+    res = sol(mid)
+    # print(mid, res)
+    if res >= N:
+        top = mid-1
+        ans = min(ans, mid)
+    else:
+        bot = mid+1
 
-'''
-7,8,9
+# print(ans)
+if ans == 0:
+    print(N)
+    exit()
 
-3 2
-0:0 1 
-2:1 
-3:0
-4:1
-6:1
- 
-'''
+# ans-1 까지
+cnt = M
+for i in range(1, 31):
+    cnt += (ans-1)//i*len(g[i])
+cand = []
+for i in range(1, 31):
+    if ans % i == 0:
+        cand.extend(g[i])
+cand.sort()
+# print(N, cnt, cand)
+print(cand[int(N-cnt-1)])
