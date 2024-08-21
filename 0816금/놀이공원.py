@@ -42,19 +42,16 @@ ans = float('inf')
 while bot <= top:
     mid = (bot+top)//2
     res = sol(mid)
-    # print(mid, res)
     if res >= N:
         top = mid-1
         ans = min(ans, mid)
     else:
         bot = mid+1
 
-# print(ans)
 if ans == 0:
     print(N)
     exit()
 
-# ans-1 까지
 cnt = M
 for i in range(1, 31):
     cnt += (ans-1)//i*len(g[i])
@@ -63,5 +60,4 @@ for i in range(1, 31):
     if ans % i == 0:
         cand.extend(g[i])
 cand.sort()
-# print(N, cnt, cand)
 print(cand[int(N-cnt-1)])
